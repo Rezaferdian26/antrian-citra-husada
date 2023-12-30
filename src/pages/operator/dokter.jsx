@@ -4,6 +4,7 @@ import AddDokter from "@/components/dokter/AddDokter";
 import EditDokter from "@/components/dokter/EditDokter";
 import { useAuth } from "@/hooks/auth";
 import axios from "@/lib/axios";
+import Cookies from "js-cookie";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -32,6 +33,7 @@ export default function Dokter() {
       setLoading(false);
       toastr.success("Dokter berhasil di hapus");
     } catch (error) {
+      console.log(error);
       toastr.error("Dokter gagal di hapus");
       setLoading(false);
     }
