@@ -8,7 +8,11 @@ import useSWR from "swr";
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 const Dashboard = () => {
   const { user } = useAuth({ middleware: "auth" });
-  const { data: antrian } = useSWR("api/antrian", fetcher);
+  const { data: antrians } = useSWR("api/antrian", fetcher);
+  const { data: antrian_by_dokter } = useSWR(
+    "api/get-antrian-by-dokter",
+    fetcher
+  );
   return (
     <AppLayout
       header={
@@ -30,7 +34,13 @@ const Dashboard = () => {
               <div className="grid grid-cols-4 gap-5 p-4">
                 <div className="bg-accent p-4 rounded-lg text-center ">
                   <p>Jumlah Antrian Pasien Saat ini</p>
-                  <p>{antrian ? antrian?.data?.length : 0}</p>
+                  {user?.role[0] === "operator" ? (
+                    <p>{antrians ? antrians?.data?.length : 0}</p>
+                  ) : (
+                    <p>
+                      {antrian_by_dokter ? antrian_by_dokter?.data?.length : 0}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
