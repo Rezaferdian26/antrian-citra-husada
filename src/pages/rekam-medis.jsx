@@ -17,6 +17,9 @@ export default function RekamMedis() {
   const { data: RMPasien } = useSWR("/api/rekam-medis-pasien", fetcher, {
     refreshInterval: 15000,
   });
+  const { data: RMDokter } = useSWR("/api/rekam-medis-dokter", fetcher, {
+    refreshInterval: 15000,
+  });
   const { user } = useAuth();
   const [dataPrint, setDataPrint] = useState(null);
 
@@ -62,7 +65,7 @@ export default function RekamMedis() {
                     <th>Aksi</th>
                   </tr>
                 </thead>
-                {user?.role[0] !== "pasien" ? (
+                {user?.role[0] === "operator" && (
                   <>
                     {data?.data.map((rekamMedis, index) => (
                       <tbody key={rekamMedis.id}>
@@ -92,9 +95,41 @@ export default function RekamMedis() {
                       </tbody>
                     ))}
                   </>
-                ) : (
+                )}
+                {user?.role[0] === "pasien" && (
                   <>
                     {RMPasien?.data.map((rekamMedis, index) => (
+                      <tbody key={rekamMedis.id}>
+                        <tr>
+                          <td>{index + 1}</td>
+                          <td>{rekamMedis.no_rekam}</td>
+                          <td>{rekamMedis.pasien}</td>
+                          <td>{rekamMedis.dokter}</td>
+                          <td>{rekamMedis.jenis_rawat}</td>
+                          <td>{rekamMedis.tgl_kun}</td>
+                          <td>{rekamMedis.diagnosa}</td>
+                          <td>{rekamMedis.resep}</td>
+                          <td>
+                            <Button
+                              title="Print"
+                              onClick={() => {
+                                document
+                                  .getElementById("my_modal_1")
+                                  .showModal();
+                                setDataPrint(rekamMedis);
+                              }}
+                            >
+                              <FaPrint />
+                            </Button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    ))}
+                  </>
+                )}
+                {user?.role[0] === "dokter" && (
+                  <>
+                    {RMDokter?.data.map((rekamMedis, index) => (
                       <tbody key={rekamMedis.id}>
                         <tr>
                           <td>{index + 1}</td>
