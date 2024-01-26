@@ -74,6 +74,14 @@ const Navigation = ({ user }) => {
               >
                 Rekam Medis
               </NavLink>
+              {user?.role[0] === "operator" && (
+                <NavLink
+                  href="/operator/rekapitulasi"
+                  active={router.pathname === "/operator/rekapitulasi"}
+                >
+                  Rekapitulasi
+                </NavLink>
+              )}
             </div>
           </div>
 
@@ -182,6 +190,14 @@ const Navigation = ({ user }) => {
             >
               Rekam Medis
             </ResponsiveNavLink>
+            {user?.role[0] === "operator" && (
+              <ResponsiveNavLink
+                href="/operator/rekapitulasi"
+                active={router.pathname === "/operator/rekapitulasi"}
+              >
+                Rekapitulasi
+              </ResponsiveNavLink>
+            )}
           </div>
 
           {/* Responsive Settings Options */}
